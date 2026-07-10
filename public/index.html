@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Караван</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="/config.js"></script>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="app">
+  <nav class="tabs">
+    <button class="tab active" data-tab="new">Новое мероприятие</button>
+    <button class="tab" data-tab="archive">Архив</button>
+  </nav>
+
+  <section id="tab-new" class="tab-panel active">
+    <div class="field">
+      <label for="event-name">Название</label>
+      <input id="event-name" type="text" placeholder="Свадьба Ивановых">
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label for="event-guests">Гостей</label>
+        <input id="event-guests" type="number" min="1" value="20">
+      </div>
+      <div class="field">
+        <label for="event-date">Дата</label>
+        <input id="event-date" type="date">
+      </div>
+    </div>
+
+    <div id="dish-categories" class="categories"></div>
+
+    <div id="calc-result" class="calc-result"></div>
+  </section>
+
+  <section id="tab-archive" class="tab-panel">
+    <div id="archive-list" class="archive-list"></div>
+    <div id="event-card" class="event-card hidden"></div>
+  </section>
+</div>
+
+<script src="/app.js"></script>
+</body>
+</html>
