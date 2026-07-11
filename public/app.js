@@ -47,10 +47,30 @@
         loadDishManager();
         loadComboManager();
         if (isTelegram) tg.MainButton.hide();
+      } else if (tab.dataset.tab === "home") {
+        if (isTelegram) tg.MainButton.hide();
       } else {
         if (isTelegram) tg.MainButton.show();
       }
     });
+  });
+
+  // ── Главный экран ────────────────────────────────────────────────────────
+  document.querySelectorAll("#tab-home [data-goto]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const target = document.querySelector(`.tab[data-tab="${btn.dataset.goto}"]`);
+      if (target) target.click();
+    });
+  });
+
+  document.getElementById("sheets-link-btn").addEventListener("click", async () => {
+    try {
+      const data = await api("/api/sheets-url");
+      if (isTelegram) tg.openLink(data.url);
+      else window.open(data.url, "_blank");
+    } catch (e) {
+      notify("Не удалось открыть таблицу: " + e.message);
+    }
   });
 
   // ── New event form ───────────────────────────────────────────────────────
