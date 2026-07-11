@@ -11,12 +11,20 @@
 <body>
 <div class="app">
   <nav class="tabs">
-    <button class="tab active" data-tab="new">Новое мероприятие</button>
+    <button class="tab active" data-tab="home">Главная</button>
+    <button class="tab" data-tab="new">Новое мероприятие</button>
     <button class="tab" data-tab="dishes">Блюда</button>
     <button class="tab" data-tab="archive">Архив</button>
   </nav>
 
-  <section id="tab-new" class="tab-panel active">
+  <section id="tab-home" class="tab-panel active">
+    <button class="save-btn" data-goto="new">➕ Новое мероприятие</button>
+    <button class="secondary-btn" data-goto="dishes">🍽️ Блюда и комбо</button>
+    <button class="secondary-btn" data-goto="archive">📂 Архив</button>
+    <button id="sheets-link-btn" class="sheets-btn">📊 Открыть Google Таблицу</button>
+  </section>
+
+  <section id="tab-new" class="tab-panel">
     <div class="field">
       <label for="event-name">Название</label>
       <input id="event-name" type="text" placeholder="Свадьба Ивановых">
