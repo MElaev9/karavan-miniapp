@@ -12,6 +12,7 @@
 <div class="app">
   <nav class="tabs">
     <button class="tab active" data-tab="new">Новое мероприятие</button>
+    <button class="tab" data-tab="dishes">Блюда</button>
     <button class="tab" data-tab="archive">Архив</button>
   </nav>
 
@@ -31,9 +32,23 @@
       </div>
     </div>
 
+    <div id="combo-picker" class="combo-picker"></div>
+
     <div id="dish-categories" class="categories"></div>
 
     <div id="calc-result" class="calc-result"></div>
+  </section>
+
+  <section id="tab-dishes" class="tab-panel">
+    <h3 class="section-title">Комбо</h3>
+    <div id="combo-list" class="combo-list"></div>
+    <button id="new-combo-btn" class="secondary-btn">+ Новое комбо</button>
+    <div id="combo-form" class="combo-form hidden"></div>
+
+    <h3 class="section-title">Каталог блюд</h3>
+    <button id="new-dish-btn" class="secondary-btn">+ Новое блюдо</button>
+    <div id="dish-form" class="dish-form hidden"></div>
+    <div id="dish-list" class="categories"></div>
   </section>
 
   <section id="tab-archive" class="tab-panel">
