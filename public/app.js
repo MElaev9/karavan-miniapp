@@ -329,7 +329,16 @@
 
   // ── Каталог блюд (вкладка "Блюда") ──────────────────────────────────────────
   const CATEGORY_OPTIONS = ["Салаты", "Горячее", "Гарниры", "Закуски", "Десерты"];
-  const UNIT_OPTIONS = ["г", "мл", "шт", "кг", "л"];
+  const UNIT_OPTIONS = ["кг", "л", "шт"];
+
+  // Старые блюда хранят вес/объём в г/мл — приводим к единому формату (кг/л)
+  // прямо при открытии формы редактирования, чтобы в выпадающем списке единиц
+  // всегда были только кг/л/шт.
+  function normalizeIngredientUnit(ing) {
+    if (ing.unit === "г") return { ...ing, amount: ing.amount / 1000, unit: "кг" };
+    if (ing.unit === "мл") return { ...ing, amount: ing.amount / 1000, unit: "л" };
+    return ing;
+  }
 
   const dishListEl = document.getElementById("dish-list");
   const dishFormEl = document.getElementById("dish-form");
@@ -373,13 +382,14 @@
       name: "",
       category: CATEGORY_OPTIONS[0],
       serves: 1,
-      ingredients: [{ name: "", amount: "", unit: "г" }],
+      ingredients: [{ name: "", amount: "", unit: "кг" }],
     };
     if (dishId) {
       try {
         dish = await api(`/api/dishes/${dishId}`);
+        dish.ingredients = dish.ingredients.map(normalizeIngredientUnit);
         if (!dish.ingredients.length) {
-          dish.ingredients = [{ name: "", amount: "", unit: "г" }];
+          dish.ingredients = [{ name: "", amount: "", unit: "кг" }];
         }
       } catch (e) {
         notify("Не удалось загрузить блюдо: " + e.message);
@@ -392,6 +402,14 @@
   function renderDishForm(dish, dishId) {
     dishFormEl.classList.remove("hidden");
     dishFormEl.innerHTML = "";
+
+    const heading = document.createElement("h3");
+    heading.className = "form-heading";
+    heading.textContent = dishId ? `Редактирование: ${dish.name}` : "Новое блюдо";
+    dishFormEl.appendChild(heading);
+    requestAnimationFrame(() => {
+      dishFormEl.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
 
     const nameField = document.createElement("input");
     nameField.type = "text";
@@ -472,7 +490,7 @@
     addIngBtn.className = "secondary-btn";
     addIngBtn.textContent = "+ Ингредиент";
     addIngBtn.addEventListener("click", () => {
-      ingredients.push({ name: "", amount: "", unit: "г" });
+      ingredients.push({ name: "", amount: "", unit: "кг" });
       renderIngredientRows();
     });
 
@@ -600,6 +618,14 @@
   async function openComboForm() {
     comboFormEl.classList.remove("hidden");
     comboFormEl.innerHTML = "";
+
+    const heading = document.createElement("h3");
+    heading.className = "form-heading";
+    heading.textContent = "Новое комбо";
+    comboFormEl.appendChild(heading);
+    requestAnimationFrame(() => {
+      comboFormEl.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
 
     const nameField = document.createElement("input");
     nameField.type = "text";
