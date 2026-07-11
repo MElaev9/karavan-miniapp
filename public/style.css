@@ -418,28 +418,40 @@ body {
   transform: scale(0.98);
 }
 
-.sheets-btn {
+.hero {
+  margin-bottom: 16px;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 0 20px 2px var(--glow-button-weak);
+}
+
+.hero-svg {
+  display: block;
   width: 100%;
-  margin-top: 4px;
-  padding: 12px;
+  height: auto;
+}
+
+.home-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.home-nav-btn {
+  padding: 12px 8px;
   border: none;
   border-radius: 10px;
-  background: var(--button);
-  color: var(--button-text);
-  font-size: 15px;
-  font-weight: 600;
+  background: var(--secondary-bg);
+  color: var(--text);
+  font-size: 13px;
   cursor: pointer;
-  box-shadow: 0 0 10px 1px var(--glow-button-strong), 0 0 24px 5px var(--glow-button-weak);
+  box-shadow: 0 0 8px 0 var(--glow-button-weak);
   transition: box-shadow 0.2s ease, transform 0.15s ease;
 }
 
-.sheets-btn:active {
-  transform: scale(0.98);
-}
-
-#tab-home .save-btn,
-#tab-home .secondary-btn {
-  margin-bottom: 12px;
+.home-nav-btn:active {
+  transform: scale(0.96);
 }
 
 .empty-state {
