@@ -6,6 +6,16 @@
   --button: var(--tg-theme-button-color, #2481cc);
   --button-text: var(--tg-theme-button-text-color, #ffffff);
   --secondary-bg: var(--tg-theme-secondary-bg-color, #f2f2f7);
+
+  --accent-green: #34c759;
+  --accent-red: #ff3b30;
+
+  --glow-button-weak: color-mix(in srgb, var(--button) 35%, transparent);
+  --glow-button-strong: color-mix(in srgb, var(--button) 55%, transparent);
+  --glow-gray-weak: color-mix(in srgb, var(--hint) 40%, transparent);
+  --glow-green-weak: rgba(52, 199, 89, 0.3);
+  --glow-green-strong: rgba(52, 199, 89, 0.6);
+  --glow-red-weak: rgba(255, 59, 48, 0.35);
 }
 
 * {
@@ -45,11 +55,14 @@ body {
   color: var(--text);
   font-size: 14px;
   cursor: pointer;
+  box-shadow: 0 0 8px 0 var(--glow-gray-weak);
+  transition: box-shadow 0.25s ease, background 0.25s ease, color 0.25s ease;
 }
 
 .tab.active {
   background: var(--button);
   color: var(--button-text);
+  box-shadow: 0 0 10px 1px var(--glow-button-strong), 0 0 24px 5px var(--glow-button-weak);
 }
 
 .tab-panel {
@@ -104,11 +117,51 @@ body {
   border-radius: 10px;
   background: var(--secondary-bg);
   margin-bottom: 6px;
+  transition: box-shadow 0.25s ease;
+}
+
+.dish-row:has(input[type="checkbox"]:checked) {
+  box-shadow: 0 0 0 1px var(--glow-green-weak) inset;
 }
 
 .dish-row label {
   flex: 1;
   font-size: 14px;
+}
+
+.dish-row input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  forced-color-adjust: none;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  margin: 0;
+  border-radius: 7px;
+  border: 2px solid var(--hint);
+  background: transparent;
+  box-shadow: 0 0 6px 0 var(--glow-gray-weak);
+  cursor: pointer;
+  position: relative;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.dish-row input[type="checkbox"]:checked {
+  border-color: var(--accent-green);
+  background: var(--accent-green);
+  box-shadow: 0 0 10px 2px var(--glow-green-strong), 0 0 22px 6px var(--glow-green-weak);
+}
+
+.dish-row input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid #ffffff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
 }
 
 .calc-result {
@@ -171,10 +224,37 @@ body {
   margin-right: 8px;
   margin-bottom: 12px;
   cursor: pointer;
+  box-shadow: 0 0 10px 1px var(--glow-button-weak);
+  transition: box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+.event-card .back-btn:active,
+.event-card .delete-btn:active {
+  transform: scale(0.97);
 }
 
 .event-card .delete-btn {
-  background: #ff3b30;
+  background: var(--accent-red);
+  box-shadow: 0 0 10px 1px var(--glow-red-weak);
+}
+
+.save-btn {
+  width: 100%;
+  margin-top: 16px;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: var(--accent-green);
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 0 10px 1px var(--glow-green-strong), 0 0 24px 5px var(--glow-green-weak);
+  transition: box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+.save-btn:active {
+  transform: scale(0.98);
 }
 
 .empty-state {

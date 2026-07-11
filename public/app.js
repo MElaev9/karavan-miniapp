@@ -197,9 +197,7 @@
   } else {
     const btn = document.createElement("button");
     btn.textContent = "Сохранить мероприятие";
-    btn.className = "tab";
-    btn.style.marginTop = "16px";
-    btn.style.width = "100%";
+    btn.className = "save-btn";
     btn.addEventListener("click", saveEvent);
     document.getElementById("tab-new").appendChild(btn);
   }
