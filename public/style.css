@@ -316,6 +316,15 @@ body {
   border-radius: 10px;
   background: var(--secondary-bg);
   margin-bottom: 16px;
+  border: 1px solid var(--button);
+  box-shadow: 0 0 16px 2px var(--glow-button-weak);
+  scroll-margin-top: 12px;
+}
+
+.form-heading {
+  font-size: 15px;
+  margin: 0 0 12px;
+  color: var(--button);
 }
 
 .form-input {
