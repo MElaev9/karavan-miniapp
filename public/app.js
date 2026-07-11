@@ -48,6 +48,7 @@
         loadComboManager();
         if (isTelegram) tg.MainButton.hide();
       } else if (tab.dataset.tab === "home") {
+        loadUpcomingEvents();
         if (isTelegram) tg.MainButton.hide();
       } else {
         if (isTelegram) tg.MainButton.show();
@@ -72,6 +73,37 @@
       notify("Не удалось открыть таблицу: " + e.message);
     }
   });
+
+  const upcomingEventsEl = document.getElementById("upcoming-events");
+
+  async function loadUpcomingEvents() {
+    try {
+      const data = await api("/api/events");
+      const today = new Date().toISOString().slice(0, 10);
+      const upcoming = data.events
+        .filter((ev) => ev.event_date && ev.event_date >= today)
+        .sort((a, b) => a.event_date.localeCompare(b.event_date))
+        .slice(0, 5);
+
+      if (!upcoming.length) {
+        upcomingEventsEl.innerHTML = '<div class="empty-state">Ближайших мероприятий с датой пока нет</div>';
+        return;
+      }
+      upcomingEventsEl.innerHTML = "";
+      upcoming.forEach((event) => {
+        const item = document.createElement("div");
+        item.className = "event-item";
+        item.innerHTML = `<div class="event-name">${event.name}</div><div class="event-meta">${event.event_date} · ${event.guests} гостей</div>`;
+        item.addEventListener("click", () => {
+          document.querySelector('.tab[data-tab="archive"]').click();
+          showEventCard(event.id);
+        });
+        upcomingEventsEl.appendChild(item);
+      });
+    } catch (e) {
+      upcomingEventsEl.innerHTML = `<div class="empty-state">Ошибка загрузки: ${e.message}</div>`;
+    }
+  }
 
   // ── New event form ───────────────────────────────────────────────────────
   const nameInput = document.getElementById("event-name");
@@ -218,6 +250,7 @@
     tg.MainButton.setText("Сохранить мероприятие");
     tg.MainButton.show();
     tg.MainButton.onClick(saveEvent);
+    tg.MainButton.hide(); // стартовый экран — "Главная", кнопку покажем при переходе на "Новое мероприятие"
   } else {
     const btn = document.createElement("button");
     btn.textContent = "Сохранить мероприятие";
@@ -708,4 +741,5 @@
 
   loadDishes();
   loadComboPicker();
+  loadUpcomingEvents();
 })();
