@@ -209,12 +209,13 @@ body {
   margin-top: 12px;
 }
 
-.event-card.hidden {
+.hidden {
   display: none;
 }
 
-.event-card .back-btn,
-.event-card .delete-btn {
+.back-btn,
+.delete-btn,
+.edit-btn {
   padding: 8px 14px;
   border: none;
   border-radius: 10px;
@@ -228,14 +229,165 @@ body {
   transition: box-shadow 0.2s ease, transform 0.15s ease;
 }
 
-.event-card .back-btn:active,
-.event-card .delete-btn:active {
+.back-btn:active,
+.delete-btn:active,
+.edit-btn:active {
   transform: scale(0.97);
 }
 
-.event-card .delete-btn {
+.delete-btn {
   background: var(--accent-red);
   box-shadow: 0 0 10px 1px var(--glow-red-weak);
+}
+
+.secondary-btn {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 12px;
+  border: 1px dashed var(--hint);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text);
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 0 8px 0 var(--glow-gray-weak);
+  transition: box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+.secondary-btn:active {
+  transform: scale(0.98);
+}
+
+.section-title {
+  font-size: 16px;
+  margin: 20px 0 10px;
+}
+
+.section-title:first-child {
+  margin-top: 0;
+}
+
+.combo-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.combo-chip {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 20px;
+  background: var(--secondary-bg);
+  color: var(--text);
+  font-size: 13px;
+  cursor: pointer;
+  box-shadow: 0 0 8px 0 var(--glow-button-weak);
+  transition: box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+.combo-chip:active {
+  transform: scale(0.96);
+}
+
+.combo-list .combo-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--secondary-bg);
+  margin-bottom: 8px;
+}
+
+.combo-item .combo-name {
+  font-size: 14px;
+}
+
+.combo-item .delete-btn {
+  margin: 0;
+  padding: 6px 10px;
+  font-size: 12px;
+}
+
+.dish-form,
+.combo-form {
+  padding: 12px;
+  border-radius: 10px;
+  background: var(--secondary-bg);
+  margin-bottom: 16px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  border-radius: 10px;
+  border: 1px solid var(--bg);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+}
+
+.ingredient-edit-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.ingredient-edit-row input {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--bg);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+}
+
+.ingredient-edit-row .ing-name {
+  flex: 2;
+  min-width: 0;
+}
+
+.ingredient-edit-row .ing-amount {
+  flex: 1;
+  min-width: 0;
+}
+
+.ingredient-edit-row .ing-unit {
+  flex: 1;
+  min-width: 0;
+}
+
+.ingredient-edit-row .remove-ing-btn {
+  border: none;
+  border-radius: 8px;
+  background: var(--accent-red);
+  color: #ffffff;
+  width: 32px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.dish-list-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: var(--secondary-bg);
+  margin-bottom: 6px;
+}
+
+.dish-list-item .dish-list-name {
+  flex: 1;
+  font-size: 14px;
+}
+
+.dish-list-item .edit-btn {
+  margin: 0;
+  padding: 6px 10px;
+  font-size: 12px;
 }
 
 .save-btn {
