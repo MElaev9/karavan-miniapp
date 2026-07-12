@@ -217,6 +217,10 @@
       notify("Укажите количество гостей");
       return;
     }
+    if (!dateInput.value) {
+      notify("Укажите дату мероприятия");
+      return;
+    }
     if (selectedDishIds.size === 0) {
       notify("Выберите хотя бы одно блюдо");
       return;
@@ -262,26 +266,103 @@
   // ── Archive ──────────────────────────────────────────────────────────────
   const archiveListEl = document.getElementById("archive-list");
   const eventCardEl = document.getElementById("event-card");
+  const archiveSearchEl = document.getElementById("archive-search");
+
+  let allArchiveEvents = [];
 
   async function loadArchive() {
     eventCardEl.classList.add("hidden");
     archiveListEl.classList.remove("hidden");
+    archiveSearchEl.value = "";
     try {
       const data = await api("/api/events");
-      if (!data.events.length) {
-        archiveListEl.innerHTML = '<div class="empty-state">Пока нет сохранённых мероприятий</div>';
-        return;
-      }
-      archiveListEl.innerHTML = "";
-      data.events.forEach((event) => {
-        const item = document.createElement("div");
-        item.className = "event-item";
-        item.innerHTML = `<div class="event-name">${event.name}</div><div class="event-meta">${event.guests} гостей${event.event_date ? " · " + event.event_date : ""}</div>`;
-        item.addEventListener("click", () => showEventCard(event.id));
-        archiveListEl.appendChild(item);
-      });
+      allArchiveEvents = data.events;
+      renderArchiveList(allArchiveEvents);
     } catch (e) {
       archiveListEl.innerHTML = `<div class="empty-state">Ошибка загрузки: ${e.message}</div>`;
+    }
+  }
+
+  archiveSearchEl.addEventListener("input", () => {
+    const q = archiveSearchEl.value.trim().toLowerCase();
+    const filtered = q
+      ? allArchiveEvents.filter((e) => e.name.toLowerCase().includes(q))
+      : allArchiveEvents;
+    renderArchiveList(filtered);
+  });
+
+  function buildEventItem(event) {
+    const item = document.createElement("div");
+    item.className = "event-item";
+    item.innerHTML = `<div class="event-name">${event.name}</div><div class="event-meta">${event.guests} гостей${event.event_date ? " · " + event.event_date : ""}</div>`;
+    item.addEventListener("click", () => showEventCard(event.id));
+    return item;
+  }
+
+  function renderArchiveList(events) {
+    if (!events.length) {
+      archiveListEl.innerHTML = '<div class="empty-state">Ничего не найдено</div>';
+      return;
+    }
+
+    const today = new Date().toISOString().slice(0, 10);
+    const upcoming = events
+      .filter((e) => e.event_date && e.event_date >= today)
+      .sort((a, b) => a.event_date.localeCompare(b.event_date));
+    const past = events
+      .filter((e) => !e.event_date || e.event_date < today)
+      .sort((a, b) => (b.event_date || "").localeCompare(a.event_date || ""));
+
+    archiveListEl.innerHTML = "";
+
+    if (upcoming.length) {
+      const heading = document.createElement("h3");
+      heading.className = "section-title";
+      heading.textContent = "Предстоящие";
+      archiveListEl.appendChild(heading);
+
+      const shoppingBtn = document.createElement("button");
+      shoppingBtn.type = "button";
+      shoppingBtn.className = "secondary-btn";
+      shoppingBtn.textContent = "📋 Сводный список закупок";
+      shoppingBtn.addEventListener("click", loadShoppingList);
+      archiveListEl.appendChild(shoppingBtn);
+
+      const shoppingPanel = document.createElement("div");
+      shoppingPanel.id = "shopping-list-panel";
+      shoppingPanel.className = "dish-form hidden";
+      archiveListEl.appendChild(shoppingPanel);
+
+      upcoming.forEach((event) => archiveListEl.appendChild(buildEventItem(event)));
+    }
+
+    if (past.length) {
+      const heading = document.createElement("h3");
+      heading.className = "section-title";
+      heading.textContent = "Прошедшие";
+      archiveListEl.appendChild(heading);
+      past.forEach((event) => archiveListEl.appendChild(buildEventItem(event)));
+    }
+  }
+
+  async function loadShoppingList() {
+    const panel = document.getElementById("shopping-list-panel");
+    if (!panel) return;
+    panel.classList.remove("hidden");
+    panel.innerHTML = '<div class="empty-state">Загрузка...</div>';
+    try {
+      const data = await api("/api/shopping-list");
+      panel.innerHTML = "";
+      const heading = document.createElement("h4");
+      heading.textContent = data.events.length
+        ? `Мероприятия: ${data.events.join(", ")}`
+        : "Нет предстоящих мероприятий с датой";
+      panel.appendChild(heading);
+      const box = document.createElement("div");
+      renderIngredients(box, data.ingredients);
+      panel.appendChild(box);
+    } catch (e) {
+      panel.innerHTML = `<div class="empty-state">Ошибка: ${e.message}</div>`;
     }
   }
 
