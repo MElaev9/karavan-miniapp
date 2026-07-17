@@ -50,6 +50,9 @@
       } else if (tab.dataset.tab === "home") {
         loadUpcomingEvents();
         if (isTelegram) tg.MainButton.hide();
+      } else if (tab.dataset.tab === "calendar") {
+        loadCalendar();
+        if (isTelegram) tg.MainButton.hide();
       } else {
         if (isTelegram) tg.MainButton.show();
       }
@@ -818,6 +821,118 @@
     comboFormEl.appendChild(dishesBox);
     comboFormEl.appendChild(saveBtn);
     comboFormEl.appendChild(cancelBtn);
+  }
+
+  // ── Календарь ────────────────────────────────────────────────────────────
+  const WEEKDAYS = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
+  const MONTH_NAMES = [
+    "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",
+    "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь",
+  ];
+
+  const calTitleEl = document.getElementById("cal-title");
+  const calGridEl = document.getElementById("calendar-grid");
+  const calDayEventsEl = document.getElementById("calendar-day-events");
+
+  let calendarMonth = new Date();
+  calendarMonth.setDate(1);
+  let calendarEventsByDate = {};
+  let calendarSelectedDate = null;
+
+  document.getElementById("cal-prev").addEventListener("click", () => {
+    calendarMonth.setMonth(calendarMonth.getMonth() - 1);
+    renderCalendarGrid();
+  });
+  document.getElementById("cal-next").addEventListener("click", () => {
+    calendarMonth.setMonth(calendarMonth.getMonth() + 1);
+    renderCalendarGrid();
+  });
+
+  async function loadCalendar() {
+    try {
+      const data = await api("/api/events");
+      calendarEventsByDate = {};
+      data.events.forEach((ev) => {
+        if (!ev.event_date) return;
+        if (!calendarEventsByDate[ev.event_date]) calendarEventsByDate[ev.event_date] = [];
+        calendarEventsByDate[ev.event_date].push(ev);
+      });
+      calendarSelectedDate = null;
+      calDayEventsEl.innerHTML = "";
+      renderCalendarGrid();
+    } catch (e) {
+      calGridEl.innerHTML = `<div class="empty-state">Ошибка загрузки: ${e.message}</div>`;
+    }
+  }
+
+  function renderCalendarGrid() {
+    calTitleEl.textContent = `${MONTH_NAMES[calendarMonth.getMonth()]} ${calendarMonth.getFullYear()}`;
+    calGridEl.innerHTML = "";
+
+    WEEKDAYS.forEach((wd) => {
+      const el = document.createElement("div");
+      el.className = "calendar-weekday";
+      el.textContent = wd;
+      calGridEl.appendChild(el);
+    });
+
+    const year = calendarMonth.getFullYear();
+    const month = calendarMonth.getMonth();
+    const firstDay = new Date(year, month, 1);
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const leadingBlanks = (firstDay.getDay() + 6) % 7; // понедельник первым
+    const todayStr = new Date().toISOString().slice(0, 10);
+
+    for (let i = 0; i < leadingBlanks; i++) {
+      const blank = document.createElement("div");
+      blank.className = "calendar-day empty";
+      calGridEl.appendChild(blank);
+    }
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      const dateStr = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+      const cell = document.createElement("div");
+      cell.className = "calendar-day";
+      if (dateStr === todayStr) cell.classList.add("today");
+      if (dateStr === calendarSelectedDate) cell.classList.add("selected");
+
+      const num = document.createElement("span");
+      num.textContent = day;
+      cell.appendChild(num);
+
+      const events = calendarEventsByDate[dateStr];
+      if (events && events.length) {
+        cell.classList.add("has-events");
+        const dot = document.createElement("span");
+        dot.className = "day-dot";
+        cell.appendChild(dot);
+        cell.addEventListener("click", () => {
+          calendarSelectedDate = dateStr;
+          renderCalendarGrid();
+          renderCalendarDayEvents(dateStr, events);
+        });
+      }
+
+      calGridEl.appendChild(cell);
+    }
+  }
+
+  function renderCalendarDayEvents(dateStr, events) {
+    calDayEventsEl.innerHTML = "";
+    const heading = document.createElement("h3");
+    heading.className = "section-title";
+    heading.textContent = dateStr;
+    calDayEventsEl.appendChild(heading);
+    events.forEach((event) => {
+      const item = document.createElement("div");
+      item.className = "event-item";
+      item.innerHTML = `<div class="event-name">${event.name}</div><div class="event-meta">${event.guests} гостей</div>`;
+      item.addEventListener("click", () => {
+        document.querySelector('.tab[data-tab="archive"]').click();
+        showEventCard(event.id);
+      });
+      calDayEventsEl.appendChild(item);
+    });
   }
 
   loadDishes();
