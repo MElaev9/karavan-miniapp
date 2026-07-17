@@ -10,13 +10,6 @@
 </head>
 <body>
 <div class="app">
-  <nav class="tabs">
-    <button class="tab active" data-tab="home">Главная</button>
-    <button class="tab" data-tab="new">Новое мероприятие</button>
-    <button class="tab" data-tab="dishes">Блюда</button>
-    <button class="tab" data-tab="archive">Архив</button>
-  </nav>
-
   <section id="tab-home" class="tab-panel active">
     <div class="hero">
       <img class="hero-img" src="/hero.png" alt="Караван">
@@ -73,6 +66,24 @@
     <div id="archive-list" class="archive-list"></div>
     <div id="event-card" class="event-card hidden"></div>
   </section>
+
+  <section id="tab-calendar" class="tab-panel">
+    <div class="calendar-header">
+      <button id="cal-prev" class="secondary-btn cal-nav-btn">‹</button>
+      <h3 id="cal-title" class="section-title"></h3>
+      <button id="cal-next" class="secondary-btn cal-nav-btn">›</button>
+    </div>
+    <div id="calendar-grid" class="calendar-grid"></div>
+    <div id="calendar-day-events"></div>
+  </section>
+
+  <nav class="tabs">
+    <button class="tab active" data-tab="home"><span class="tab-icon">🏠</span><span class="tab-label">Главная</span></button>
+    <button class="tab" data-tab="new"><span class="tab-icon">➕</span><span class="tab-label">Новое</span></button>
+    <button class="tab" data-tab="dishes"><span class="tab-icon">🍽️</span><span class="tab-label">Блюда</span></button>
+    <button class="tab" data-tab="calendar"><span class="tab-icon">📅</span><span class="tab-label">Календарь</span></button>
+    <button class="tab" data-tab="archive"><span class="tab-icon">📂</span><span class="tab-label">Архив</span></button>
+  </nav>
 </div>
 
 <script src="/app.js"></script>
