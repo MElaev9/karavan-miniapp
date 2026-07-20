@@ -19,6 +19,12 @@
     return headers;
   }
 
+  function formatDate(iso) {
+    if (!iso) return "";
+    const [y, m, d] = iso.split("-");
+    return `${d}.${m}.${y}`;
+  }
+
   async function api(path, options = {}) {
     const res = await fetch(API_BASE + path, {
       ...options,
@@ -40,21 +46,16 @@
       panels.forEach((p) => p.classList.remove("active"));
       tab.classList.add("active");
       document.getElementById("tab-" + tab.dataset.tab).classList.add("active");
+      document.querySelector(".floating-save-btn").classList.toggle("visible", tab.dataset.tab === "new");
       if (tab.dataset.tab === "archive") {
         loadArchive();
-        if (isTelegram) tg.MainButton.hide();
       } else if (tab.dataset.tab === "dishes") {
         loadDishManager();
         loadComboManager();
-        if (isTelegram) tg.MainButton.hide();
       } else if (tab.dataset.tab === "home") {
         loadUpcomingEvents();
-        if (isTelegram) tg.MainButton.hide();
       } else if (tab.dataset.tab === "calendar") {
         loadCalendar();
-        if (isTelegram) tg.MainButton.hide();
-      } else {
-        if (isTelegram) tg.MainButton.show();
       }
     });
   });
@@ -96,7 +97,7 @@
       upcoming.forEach((event) => {
         const item = document.createElement("div");
         item.className = "event-item";
-        item.innerHTML = `<div class="event-name">${event.name}</div><div class="event-meta">${event.event_date} · ${event.guests} гостей</div>`;
+        item.innerHTML = `<div class="event-name">${event.name}</div><div class="event-meta">${formatDate(event.event_date)} · ${event.guests} гостей</div>`;
         item.addEventListener("click", () => {
           document.querySelector('.tab[data-tab="archive"]').click();
           showEventCard(event.id);
@@ -253,18 +254,15 @@
     else alert(message);
   }
 
-  if (isTelegram) {
-    tg.MainButton.setText("Сохранить мероприятие");
-    tg.MainButton.show();
-    tg.MainButton.onClick(saveEvent);
-    tg.MainButton.hide(); // стартовый экран — "Главная", кнопку покажем при переходе на "Новое мероприятие"
-  } else {
-    const btn = document.createElement("button");
-    btn.textContent = "Сохранить мероприятие";
-    btn.className = "save-btn";
-    btn.addEventListener("click", saveEvent);
-    document.getElementById("tab-new").appendChild(btn);
-  }
+  // Свой плавающий "Сохранить" вместо tg.MainButton — у Telegram MainButton
+  // своя логика позиционирования снизу экрана, которая наезжала на наш
+  // собственный нижний нав-бар. Рисуем и позиционируем сами, единообразно
+  // и в Telegram, и в обычном браузере.
+  const saveEventBtn = document.createElement("button");
+  saveEventBtn.textContent = "Сохранить мероприятие";
+  saveEventBtn.className = "save-btn floating-save-btn";
+  saveEventBtn.addEventListener("click", saveEvent);
+  document.querySelector(".app").appendChild(saveEventBtn);
 
   // ── Archive ──────────────────────────────────────────────────────────────
   const archiveListEl = document.getElementById("archive-list");
@@ -297,7 +295,7 @@
   function buildEventItem(event) {
     const item = document.createElement("div");
     item.className = "event-item";
-    item.innerHTML = `<div class="event-name">${event.name}</div><div class="event-meta">${event.guests} гостей${event.event_date ? " · " + event.event_date : ""}</div>`;
+    item.innerHTML = `<div class="event-name">${event.name}</div><div class="event-meta">${event.guests} гостей${event.event_date ? " · " + formatDate(event.event_date) : ""}</div>`;
     item.addEventListener("click", () => showEventCard(event.id));
     return item;
   }
@@ -399,7 +397,7 @@
       });
 
       const title = document.createElement("h3");
-      title.textContent = `${event.name} — ${event.guests} гостей${event.event_date ? " (" + event.event_date + ")" : ""}`;
+      title.textContent = `${event.name} — ${event.guests} гостей${event.event_date ? " (" + formatDate(event.event_date) + ")" : ""}`;
 
       const ingredientsBox = document.createElement("div");
       renderIngredients(ingredientsBox, event.ingredients);
@@ -921,7 +919,7 @@
     calDayEventsEl.innerHTML = "";
     const heading = document.createElement("h3");
     heading.className = "section-title";
-    heading.textContent = dateStr;
+    heading.textContent = formatDate(dateStr);
     calDayEventsEl.appendChild(heading);
     events.forEach((event) => {
       const item = document.createElement("div");
