@@ -71,23 +71,30 @@ body {
   background: transparent;
   color: var(--hint);
   cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease;
+  transition: background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1), color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .tab .tab-icon {
-  font-size: 18px;
   width: 32px;
   height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 12px;
-  transition: background 0.2s ease;
+  color: inherit;
+  transition: background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s ease;
+}
+
+.tab .tab-icon svg {
+  width: 19px;
+  height: 19px;
+  flex-shrink: 0;
 }
 
 .tab .tab-label {
   font-size: 10px;
   line-height: 1.2;
+  transition: color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .tab.active {
@@ -97,7 +104,9 @@ body {
 
 .tab.active .tab-icon {
   background: var(--button);
+  color: var(--button-text);
   box-shadow: 0 0 10px 1px var(--glow-button-strong);
+  transform: scale(1.06);
 }
 
 .tab-panel {
