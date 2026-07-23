@@ -9,6 +9,12 @@
   if (tg) {
     tg.ready();
     tg.expand();
+    try {
+      tg.setHeaderColor("#150b0d");
+      tg.setBackgroundColor("#150b0d");
+    } catch (e) {
+      // старые клиенты Telegram не поддерживают произвольный HEX — не критично
+    }
   }
 
   function authHeaders() {
