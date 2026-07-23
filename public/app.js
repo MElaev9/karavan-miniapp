@@ -194,7 +194,7 @@
 
   function formatAmount(amount, unit) {
     if (unit === "шт") return `${Math.round(amount)} шт`;
-    return `${parseFloat(amount).toString()} ${unit}`;
+    return `${parseFloat(amount).toFixed(1)} ${unit}`;
   }
 
   async function recalc() {
