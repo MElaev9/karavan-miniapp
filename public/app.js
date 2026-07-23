@@ -332,7 +332,7 @@
       shoppingBtn.type = "button";
       shoppingBtn.className = "secondary-btn";
       shoppingBtn.textContent = "📋 Сводный список закупок";
-      shoppingBtn.addEventListener("click", loadShoppingList);
+      shoppingBtn.addEventListener("click", () => toggleShoppingList(shoppingBtn));
       archiveListEl.appendChild(shoppingBtn);
 
       const shoppingPanel = document.createElement("div");
@@ -352,9 +352,20 @@
     }
   }
 
-  async function loadShoppingList() {
+  function toggleShoppingList(btn) {
     const panel = document.getElementById("shopping-list-panel");
     if (!panel) return;
+    if (!panel.classList.contains("hidden")) {
+      panel.classList.add("hidden");
+      panel.innerHTML = "";
+      btn.textContent = "📋 Сводный список закупок";
+      return;
+    }
+    btn.textContent = "📋 Свернуть список закупок";
+    loadShoppingList(panel);
+  }
+
+  async function loadShoppingList(panel) {
     panel.classList.remove("hidden");
     panel.innerHTML = '<div class="empty-state">Загрузка...</div>';
     try {
