@@ -1,25 +1,27 @@
 :root {
-  --bg: var(--tg-theme-bg-color, #ffffff);
-  --text: var(--tg-theme-text-color, #1c1c1e);
-  --hint: var(--tg-theme-hint-color, #8e8e93);
-  --link: var(--tg-theme-link-color, #2481cc);
-  --button: var(--tg-theme-button-color, #2481cc);
-  --button-text: var(--tg-theme-button-text-color, #ffffff);
-  --secondary-bg: var(--tg-theme-secondary-bg-color, #f2f2f7);
+  --bg: #150b0d;
+  --text: #f3e7d6;
+  --hint: #b39880;
+  --link: #d9b872;
+  --button: #c9a463;
+  --button-text: #241209;
+  --secondary-bg: #2a161a;
 
-  --accent-green: #34c759;
-  --accent-red: #ff3b30;
+  --accent-green: #b8863f;
+  --accent-red: #a8394a;
+
+  --font-serif: "Playfair Display", Georgia, "Times New Roman", serif;
 
   --glow-button-weak: color-mix(in srgb, var(--button) 35%, transparent);
   --glow-button-strong: color-mix(in srgb, var(--button) 55%, transparent);
   --glow-gray-weak: color-mix(in srgb, var(--hint) 40%, transparent);
-  --glow-green-weak: rgba(52, 199, 89, 0.3);
-  --glow-green-strong: rgba(52, 199, 89, 0.6);
-  --glow-red-weak: rgba(255, 59, 48, 0.35);
+  --glow-green-weak: color-mix(in srgb, var(--accent-green) 30%, transparent);
+  --glow-green-strong: color-mix(in srgb, var(--accent-green) 55%, transparent);
+  --glow-red-weak: color-mix(in srgb, var(--accent-red) 35%, transparent);
 
   --glass-bg: color-mix(in srgb, var(--secondary-bg) 65%, transparent);
   --glass-bg-strong: color-mix(in srgb, var(--secondary-bg) 78%, transparent);
-  --glass-border: color-mix(in srgb, var(--text) 10%, transparent);
+  --glass-border: color-mix(in srgb, var(--button) 22%, transparent);
   --glass-blur: 14px;
 }
 
@@ -30,7 +32,8 @@
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background: var(--bg);
+  background: radial-gradient(ellipse 120% 50% at 50% -10%, color-mix(in srgb, var(--secondary-bg) 55%, transparent), transparent), var(--bg);
+  background-attachment: fixed;
   color: var(--text);
 }
 
@@ -149,8 +152,10 @@ body {
 }
 
 .category h3 {
-  font-size: 15px;
+  font-family: var(--font-serif);
+  font-size: 16px;
   margin: 0 0 8px;
+  color: var(--link);
 }
 
 .dish-row {
@@ -204,7 +209,7 @@ body {
   top: 2px;
   width: 5px;
   height: 10px;
-  border: solid #ffffff;
+  border: solid var(--button-text);
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }
@@ -244,6 +249,8 @@ body {
 }
 
 .event-item .event-name {
+  font-family: var(--font-serif);
+  font-size: 16px;
   font-weight: 600;
 }
 
@@ -312,7 +319,10 @@ body {
 }
 
 .section-title {
-  font-size: 16px;
+  font-family: var(--font-serif);
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
   margin: 20px 0 10px;
 }
 
@@ -355,7 +365,8 @@ body {
 }
 
 .combo-item .combo-name {
-  font-size: 14px;
+  font-family: var(--font-serif);
+  font-size: 15px;
 }
 
 .combo-item .delete-btn {
@@ -378,7 +389,8 @@ body {
 }
 
 .form-heading {
-  font-size: 15px;
+  font-family: var(--font-serif);
+  font-size: 17px;
   margin: 0 0 12px;
   color: var(--button);
 }
@@ -447,7 +459,8 @@ body {
 
 .dish-list-item .dish-list-name {
   flex: 1;
-  font-size: 14px;
+  font-family: var(--font-serif);
+  font-size: 15px;
 }
 
 .dish-list-item .edit-btn {
@@ -463,8 +476,9 @@ body {
   border: none;
   border-radius: 10px;
   background: var(--accent-green);
-  color: #ffffff;
-  font-size: 15px;
+  color: var(--button-text);
+  font-family: var(--font-serif);
+  font-size: 16px;
   font-weight: 600;
   cursor: pointer;
   box-shadow: 0 0 10px 1px var(--glow-green-strong), 0 0 24px 5px var(--glow-green-weak);
@@ -495,6 +509,7 @@ body {
   margin-bottom: 16px;
   border-radius: 18px;
   overflow: hidden;
+  border: 1px solid var(--glass-border);
   box-shadow: 0 0 20px 2px var(--glow-button-weak);
 }
 
