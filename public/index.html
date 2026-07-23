@@ -15,7 +15,32 @@
 <div class="app">
   <section id="tab-home" class="tab-panel active">
     <div class="hero">
-      <img class="hero-img" src="/hero.png" alt="Караван">
+      <svg class="hero-img" viewBox="0 0 1200 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Караван — банкетный зал">
+        <defs>
+          <linearGradient id="heroBg" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#3f0f18"/>
+            <stop offset="55%" stop-color="#260f14"/>
+            <stop offset="100%" stop-color="#150b0d"/>
+          </linearGradient>
+          <radialGradient id="heroGlow" cx="50%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#6f2030" stop-opacity="0.55"/>
+            <stop offset="100%" stop-color="#6f2030" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <rect width="1200" height="420" fill="url(#heroBg)"/>
+        <rect width="1200" height="420" fill="url(#heroGlow)"/>
+        <rect x="14" y="14" width="1172" height="392" fill="none" stroke="#c9a463" stroke-opacity="0.35" stroke-width="1.5"/>
+
+        <line x1="430" y1="168" x2="560" y2="168" stroke="#c9a463" stroke-width="1.5"/>
+        <rect x="595" y="162" width="12" height="12" fill="#c9a463" transform="rotate(45 601 168)"/>
+        <line x1="640" y1="168" x2="770" y2="168" stroke="#c9a463" stroke-width="1.5"/>
+
+        <text x="600" y="248" text-anchor="middle" font-family="'Playfair Display', Georgia, serif" font-weight="700" font-size="86" letter-spacing="10" fill="#e3c890">КАРАВАН</text>
+
+        <line x1="470" y1="286" x2="730" y2="286" stroke="#c9a463" stroke-opacity="0.6" stroke-width="1"/>
+        <text x="600" y="318" text-anchor="middle" font-family="'Playfair Display', Georgia, serif" font-weight="500" font-size="22" letter-spacing="6" fill="#c9a463">БАНКЕТНЫЙ ЗАЛ</text>
+        <line x1="470" y1="336" x2="730" y2="336" stroke="#c9a463" stroke-opacity="0.6" stroke-width="1"/>
+      </svg>
     </div>
 
     <h3 class="section-title">Ближайшие мероприятия</h3>
